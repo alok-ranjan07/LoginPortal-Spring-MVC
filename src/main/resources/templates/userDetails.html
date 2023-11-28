@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>User Profile</title>
+	<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
+</head>
+
+<body>
+	<h3>you are logged in....</h3>
+	Username : <span th:text="${username}"></span> <br><br>
+	Email-Id : <span th:text="${email}"></span> <br><br>
+	Mobile Number : <span th:text="${number}"></span> <br><br>
+	Gender : <span th:text="${gender}"></span> <br><br>
+	<a th:href=@{/changePassword}>Change password</a><br><br>
+	<a class="btn-logout" th:href=@{/logout}>Logout</a>
+</body>
+
+</html>

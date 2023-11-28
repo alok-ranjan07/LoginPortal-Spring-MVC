@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.btn-login {
+  background-color: #199319;
+  color: white;
+  padding: 3px 5px;
+  text-decoration: none;
+}
+.btn-logout {
+  background-color: #199319;
+  color: white;
+  padding: 3px 5px;
+  text-decoration: none;
+}
+
+.btn-login:hover {
+  background-color: blue;
+}
+
+.btn-logout:hover {
+	color: black;
+  background-color: red;
+}

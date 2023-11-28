@@ -1,0 +1,33 @@
+<html
+xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title>Registration Page</title>
+		<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
+	</head>
+	
+	<body>
+		<h1>Sign-up in seconds</h1>
+		
+		<form th:action="@{/addUser}" method="post" th:object="${userdata}">
+			Enter the username: <input type="text" id="username" th:field="*{username}" required/><br><br>
+			Enter the E-mail: <input type="text" id="email" th:field="*{email}" required/><br><br>
+			Enter the Mobile number: <input type="number" id="mobile_number" th:field="*{number}" required/><br><br>
+			Enter the password: <input type="password" id="password" th:field="*{password}" required/> <br><br>
+			Select Gender: Male <input type="radio" id="gender" value="Male" th:field="*{gender}" />
+						   Female <input type="radio" id="gender" value="Female" th:field="*{gender}" /> <br><br>
+			Select Security Question: <select id="securityquestion" th:field="*{question}">
+										<option value="Select your security question">Select your security question</option>
+										<option value="What is your childhood name?">What is your childhood name?</option>
+										<option value="What is your pet's name?">What is your pet's name?</option>
+										<option value="Which country you want to visit?">Which country you want to visit?</option>
+										<option value="Who is your favorite actor?">Who is your favorite actor?</option>
+									</select> <br><br>
+			Enter the Security Answer: <input type="text" id="securityanswer" th:field="*{answer}" required/> <br><br>
+			
+			<button type="submit">Submit</button> <br>
+		</form><br>
+		<a class="btn-login" th:href=@{/home}>Home</a><br>
+		<div style="color: red;" th:if="${message}" th:text="${message}"></div>
+	</body>
+</html>
