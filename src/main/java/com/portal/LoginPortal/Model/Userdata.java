@@ -35,7 +35,7 @@ public class Userdata {
 	@Column(name = "security_question")
 	private String question;
 
-	@Column(name = "seq_answer")
+	@Column(name = "security_answer")
 	private String answer;
 
 	@Column(name = "mobile_number")
@@ -43,6 +43,21 @@ public class Userdata {
 
 	@Column(name = "last_login_time")
 	private String lastLogin;
+	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "address_optional")
+	private String address2;
+	
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "state")
+	private String state;
+	
+	@Column(name = "zip_code")
+	private String zip;
 
 	public Integer getUserid() {
 		return userid;
@@ -116,8 +131,49 @@ public class Userdata {
 		this.lastLogin = lastLogin;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
 	public Userdata(Integer userid, String username, String email, String password, String gender, String question,
-			String answer, String number, String lastLogin) {
+			String answer, String number, String lastLogin, String address, String address2, String city, String state,
+			String zip) {
 		super();
 		this.userid = userid;
 		this.username = username;
@@ -128,6 +184,11 @@ public class Userdata {
 		this.answer = answer;
 		this.number = number;
 		this.lastLogin = lastLogin;
+		this.address = address;
+		this.address2 = address2;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
 	}
 
 	public Userdata() {
@@ -138,9 +199,12 @@ public class Userdata {
 	public String toString() {
 		return "Userdata [userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", gender=" + gender + ", question=" + question + ", answer=" + answer + ", number=" + number
-				+ ", lastLogin=" + lastLogin + "]";
+				+ ", lastLogin=" + lastLogin + ", address=" + address + ", address2=" + address2 + ", city=" + city
+				+ ", state=" + state + ", zip=" + zip + "]";
 	}
+	
 
+	
 
 
 }

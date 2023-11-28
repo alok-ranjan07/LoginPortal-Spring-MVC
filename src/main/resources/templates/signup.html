@@ -1,46 +1,158 @@
-<html
-xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<title>Registration Page</title>
-		<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
-		<link rel="stylesheet"
- href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
- integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
- crossorigin="anonymous">
-	</head>
-	
-	<body>
-		<h1>Sign-up in seconds</h1>
-		
-		<form th:action="@{/addUser}" method="post" th:object="${user}">
-			
-			Enter the username: <input type="text" id="username" th:field="*{username}" pattern="^[a-zA-Z0-9]{6,12}$" required/><br><br>
-			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br><br>
-			
-			Enter the E-mail: <input type="text" id="email" th:field="*{email}" required/><br><br>
-			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-			
-			Enter the Mobile number: <input type="number" id="mobile_number" th:field="*{number}" required/><br><br>
-			<div th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div><br><br>
-			
-			Enter the password: <input type="password" id="password" th:field="*{password}" required/> <br><br>
-			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br><br>
-			
-			Select Gender: Male <input type="radio" id="gender" value="Male" th:field="*{gender}" />
-						   Female <input type="radio" id="gender" value="Female" th:field="*{gender}" /> <br><br>
-			Select Security Question: <select id="securityquestion" th:field="*{question}">
-										<option value="Select your security question">Select your security question</option>
-										<option value="What is your childhood name?">What is your childhood name?</option>
-										<option value="What is your pet's name?">What is your pet's name?</option>
-										<option value="Which country you want to visit?">Which country you want to visit?</option>
-										<option value="Who is your favorite actor?">Who is your favorite actor?</option>
-									</select> <br><br>
-			Enter the Security Answer: <input type="text" id="securityanswer" th:field="*{answer}" required/> <br><br>
-			
-			<button type="submit">Submit</button> <br>
-		</form><br>
-		<a class="btn-login" th:href=@{/home}>Home</a><br>
-		<div style="color: red;" th:if="${message}" th:text="${message}"></div>
-	</body>
+<head>
+	<title>Registration Page</title>.
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
+	<script type="text/javascript" th:src="@{script.js}"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+	<div class="container-fluid parent">
+		<nav id="navbar" class="navbar bg-body-tertiary px-3 mb-3 sticky-top justify-content-center navtop">
+			<ul class="nav nav-pills">
+				<li class="nav-item">
+					<a class="nav-link" href="#inputUsername4">Personal Details</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#inputAddress">Address</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#signup">Signup</a>
+				</li>
+			</ul>
+		</nav>
+		<div data-bs-spy="scroll" data-bs-target="#navbar" data-bs-root-margin="0px 0px -40%"
+			data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2 signup" tabindex="0">
+			<form class="row g-3" th:action="@{/addUser}" method="post" th:object="${user}">
+
+				<!-- Username Input-->
+				<div class="col-md-6">
+					<label for="inputUsername4" class="form-label">Enter the username:</label>
+					<input type="text" class="form-control" id="inputUsername4" th:field="*{username}" required>
+					<div class="msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+				</div>
+
+				<!-- Email Input-->
+				<div class="col-md-6">
+					<label for="inputEmail4" class="form-label">Enter the E-mail:</label>
+					<input type="email" class="form-control" id="inputEmail4" th:field="*{email}" required>
+					<div class="msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+				</div>
+
+				<!-- Password Input-->
+				<div class="col-md-6">
+					<label for="inputPassword4" class="form-label">Enter the password:</label>
+					<input type="password" class="form-control" id="inputPassword4" th:field="*{password}" required>
+					<div class="msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+				</div>
+
+				<!-- Mobile number Input-->
+				<div class="col-md-4">
+					<label for="inputMobileNumber" class="form-label">Enter the Mobile number:</label>
+					<input type="number" class="form-control" id="inputMobileNumber" th:field="*{number}" required>
+					<div class="msg" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+				</div>
+
+				<!-- Gender Input-->
+				<div class="col-md-2">
+					<label class="form-label">Select Gender:</label>
+					<div>
+						<input type="radio" class="btn-check" name="options-outlined" id="male-outlined"
+							autocomplete="off" value="Male" th:field="*{gender}" checked>
+						<label class="btn btn-outline-primary" for="male-outlined">Male</label>
+
+						<input type="radio" class="btn-check" name="options-outlined" id="female-outlined"
+							autocomplete="off" value="Female" th:field="*{gender}">
+						<label class="btn btn-outline-danger" for="female-outlined">Female</label>
+					</div>
+				</div>
+
+				<!-- Adderss1 Input-->
+				<div class="col-12">
+					<label for="inputAddress" class="form-label">Address:</label>
+					<input type="text" class="form-control" id="inputAddress" th:field="*{address}"
+						placeholder="Apartment / Street name" required>
+				</div>
+
+				<!-- Address2 Input-->
+				<div class="col-12">
+					<label for="inputAddress2" class="form-label">Address (Optional)</label>
+					<input type="text" class="form-control" id="inputAddress2" th:field="*{address2}"
+						placeholder="Area/Locality">
+				</div>
+
+				<!-- City Input-->
+				<div class="col-md-6">
+					<label for="inputCity" class="form-label">City</label>
+					<input type="text" class="form-control" id="inputCity" th:field="*{city}">
+					<div class="msg" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+				</div>
+
+				<!-- State Input-->
+				<div class="col-md-4">
+					<label for="inputState" class="form-label">State</label>
+					<select id="inputState" class="form-select" th:field="*{state}">
+						<option value="Choose" selected>Choose...</option>
+						<option value="Karnataka">Karnataka</option>
+						<option value="Maharastra">Maharastra</option>
+						<option value="Odisha">Odisha</option>
+						<option value="Punjab">Punjab</option>
+						<option value="Chennai">Chennai</option>
+					</select>
+				</div>
+
+				<!-- Zipcode Input-->
+				<div class="col-md-2">
+					<label for="inputZip" class="form-label">Zip</label>
+					<input type="text" class="form-control" id="inputZip" th:field="*{zip}">
+					<div class="msg" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></div>
+				</div>
+
+				<!-- Security question Input-->
+				<div class="col-md-6">
+					<label for="securityQuestion" class="form-label">Select Security Question:</label>
+					<div>
+						<select id="securityQuestion" class="form-control" th:field="*{question}">
+							<option value="Choose">Choose...</option>
+							<option value="What is your childhood name?">What is your childhood name?</option>
+							<option value="What is your pet's name?">What is your pet's name?</option>
+							<option value="Which country you want to visit?">Which country you want to visit?</option>
+							<option value="Who is your favorite actor?">Who is your favorite actor?</option>
+						</select>
+					</div>
+				</div>
+
+
+				<!-- Security answer Input-->
+				<div class="col-md-6">
+					<label for="securityAnswer" class="form-label">Enter the Security Answer:</label>
+					<input type="text" class="form-control" id="securityAnswer" th:field="*{answer}">
+				</div>
+
+				<!-- Signin button-->
+				<div class="col-12">
+					<button type="submit" id="signup" class="btn btn-primary btn-block mb-4 form-control">Sign
+						in</button>
+				</div>
+
+				<!-- Login link Input-->
+				<div class="text-center">
+					<p>Already Registered? <a th:href=@{/login}>Login</a></p>
+				</div>
+
+			</form>
+
+			<div class="msg" th:if="${message}" th:text="${message}"></div>
+		</div>
+	</div>
+
+</body>
+
 </html>

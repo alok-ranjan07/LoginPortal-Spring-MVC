@@ -3,21 +3,44 @@
 
 <head>
 	<title>User Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
-	<link rel="stylesheet"
- href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
- integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
- crossorigin="anonymous">
+	<script type="text/javascript" th:src="@{script.js}"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<h3>you are logged in....</h3>
-	Username : <span th:text="${username}"></span> <br><br>
-	Email-Id : <span th:text="${email}"></span> <br><br>
-	Mobile Number : <span th:text="${number}"></span> <br><br>
-	Gender : <span th:text="${gender}"></span> <br><br>
-	<a th:href=@{/changePassword}>Change password</a><br><br>
-	<a class="btn-logout" th:href=@{/logout}>Logout</a>
+	<div class="container-fluid parent">
+		<div class="card userDetails">
+			<img th:if="${user.gender} == 'Male'" src="/Male_robo_image.jpg" class="card-img-top"
+				alt="Image not available">
+			<img th:if="${user.gender} == 'Female'" src="/Female_robo_image.jpg" class="card-img-top"
+				alt="Image not available">
+			<div class="card-body">
+				<h5 class="card-title" th:text="'Hello! ' + ${user.username}"></h5>
+				Email-Id :<p class="card-text" th:text="${user.email}"></p>
+				Mobile Number :<p class="card-text" th:text="${user.number}"></p>
+				Address :
+				<p class="card-text" th:if="${#strings.isEmpty(user.address2)}"
+					th:text="${user.address} +', '+ ${user.city} +', '+ ${user.state} +', '+ ${user.zip}">
+				</p>
+				<p class="card-text" th:unless="${#strings.isEmpty(user.address2)}"
+					th:text="${user.address} +', ' + ${user.address2} +', '+ ${user.city} +', '+ ${user.state} +', '+ ${user.zip}">
+				</p>
+
+				Last Login :<p class="card-text" th:text="${user.lastLogin}"></p>
+				<a th:href=@{/changePassword} class="btn btn-primary">Change password</a>
+				<a th:href=@{/logout} class="btn btn-primary">Logout</a>
+			</div>
+		</div>
+	</div>
+
+
+
 </body>
 
 </html>

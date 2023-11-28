@@ -1,23 +1,42 @@
-@charset "UTF-8";
-
-.btn-login {
-  background-color: #199319;
-  color: white;
-  padding: 3px 5px;
-  text-decoration: none;
-}
-.btn-logout {
-  background-color: #199319;
-  color: white;
-  padding: 3px 5px;
-  text-decoration: none;
+body {
+	background-image: url("background_image.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
 }
 
-.btn-login:hover {
-  background-color: blue;
+.parent {
+	display: block;
+	justify-content: center;
+	align-items: center;
 }
 
-.btn-logout:hover {
-	color: black;
-  background-color: red;
+.child {
+	position: absolute;
+	width: 40%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+}
+
+.signup {
+	width: 80%;
+	margin: auto;
+}
+
+.navtop {
+	width: 80%;
+	margin: auto;
+}
+
+.userDetails{
+	position: absolute;
+	top: 10px;
+	width: 18rem;
+	margin: auto;
+}
+
+.msg{
+	color: red;
 }

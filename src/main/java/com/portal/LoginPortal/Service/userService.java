@@ -25,6 +25,11 @@ public class userService {
 
 	}
 
+	public UserDto getUserDto(Userdata user) {
+		return convertEntityToDto(user);
+
+	}
+
 	public Userdata searchByUsername(String username) {
 
 		return userRepo.findByUsername(username);
@@ -44,17 +49,41 @@ public class userService {
 	}
 
 	private Userdata convertDtoToEntity(UserDto userdto) {
-		Userdata user = new Userdata();
-		user.setUsername(userdto.getUsername());
-		user.setEmail(userdto.getEmail());
-		user.setNumber(userdto.getNumber());
-		user.setAnswer(userdto.getAnswer());
-		user.setGender(userdto.getGender());
-		user.setPassword(userdto.getPassword());
-		user.setQuestion(userdto.getQuestion());
-		user.setLastLogin(userdto.getLastLogin());
+		Userdata userdata = new Userdata();
+		userdata.setUsername(userdto.getUsername());
+		userdata.setEmail(userdto.getEmail());
+		userdata.setNumber(userdto.getNumber());
+		userdata.setAnswer(userdto.getAnswer());
+		userdata.setGender(userdto.getGender());
+		userdata.setPassword(userdto.getPassword());
+		userdata.setQuestion(userdto.getQuestion());
+		userdata.setAddress(userdto.getAddress());
+		userdata.setAddress2(userdto.getAddress2());
+		userdata.setCity(userdto.getCity());
+		userdata.setState(userdto.getState());
+		userdata.setZip(userdto.getZip());
+		userdata.setLastLogin(userdto.getLastLogin());
 
-		return user;
+		return userdata;
+	}
+	
+private UserDto convertEntityToDto(Userdata userdata) {
+	UserDto userdto = new UserDto();
+	userdto.setUsername(userdata.getUsername());
+	userdto.setEmail(userdata.getEmail());
+	userdto.setNumber(userdata.getNumber());
+	userdto.setAnswer(userdata.getAnswer());
+	userdto.setGender(userdata.getGender());
+	userdto.setPassword(userdata.getPassword());
+	userdto.setQuestion(userdata.getQuestion());
+	userdto.setLastLogin(userdata.getLastLogin());
+	userdto.setAddress(userdata.getAddress());
+	userdto.setAddress2(userdata.getAddress2());
+	userdto.setCity(userdata.getCity());
+	userdto.setState(userdata.getState());
+	userdto.setZip(userdata.getZip());
+
+	return userdto;
 	}
 
 }
