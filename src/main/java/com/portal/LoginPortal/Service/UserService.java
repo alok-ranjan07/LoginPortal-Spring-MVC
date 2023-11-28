@@ -8,16 +8,14 @@ import com.portal.LoginPortal.Model.Userdata;
 import com.portal.LoginPortal.Repository.UserRepository;
 import com.portal.LoginPortal.SecurityConfig.PasswordEncoder;
 
-
 @Service
 public class UserService {
 
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 
 	public void add(UserDto userdto) {
 
@@ -28,6 +26,12 @@ public class UserService {
 	public void add(Userdata userdata) {
 
 		userRepo.save(userdata);
+
+	}
+
+	public void deleteUser(Userdata currentUser) {
+
+		userRepo.delete(currentUser);
 
 	}
 
@@ -73,24 +77,24 @@ public class UserService {
 
 		return userdata;
 	}
-	
-private UserDto convertEntityToDto(Userdata userdata) {
-	UserDto userdto = new UserDto();
-	userdto.setUsername(userdata.getUsername());
-	userdto.setEmail(userdata.getEmail());
-	userdto.setNumber(userdata.getNumber());
-	userdto.setAnswer(userdata.getAnswer());
-	userdto.setGender(userdata.getGender());
-	userdto.setPassword(userdata.getPassword());
-	userdto.setQuestion(userdata.getQuestion());
-	userdto.setLastLogin(userdata.getLastLogin());
-	userdto.setAddress(userdata.getAddress());
-	userdto.setAddress2(userdata.getAddress2());
-	userdto.setCity(userdata.getCity());
-	userdto.setState(userdata.getState());
-	userdto.setZip(userdata.getZip());
 
-	return userdto;
+	private UserDto convertEntityToDto(Userdata userdata) {
+		UserDto userdto = new UserDto();
+		userdto.setUsername(userdata.getUsername());
+		userdto.setEmail(userdata.getEmail());
+		userdto.setNumber(userdata.getNumber());
+		userdto.setAnswer(userdata.getAnswer());
+		userdto.setGender(userdata.getGender());
+		userdto.setPassword(userdata.getPassword());
+		userdto.setQuestion(userdata.getQuestion());
+		userdto.setLastLogin(userdata.getLastLogin());
+		userdto.setAddress(userdata.getAddress());
+		userdto.setAddress2(userdata.getAddress2());
+		userdto.setCity(userdata.getCity());
+		userdto.setState(userdata.getState());
+		userdto.setZip(userdata.getZip());
+
+		return userdto;
 	}
 
 }

@@ -11,6 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 		crossorigin="anonymous"></script>
+	<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 
 <body>
@@ -31,10 +32,45 @@
 				<p class="card-text" th:unless="${#strings.isEmpty(user.address2)}"
 					th:text="${user.address} +', ' + ${user.address2} +', '+ ${user.city} +', '+ ${user.state} +', '+ ${user.zip}">
 				</p>
-
 				Last Login :<p class="card-text" th:text="${user.lastLogin}"></p>
+
 				<a th:href=@{/changePassword} class="btn btn-primary">Change password</a>
-				<a th:href=@{/logout} class="btn btn-primary">Logout</a>
+				<a style="text-align: right;" th:href=@{/logout} class="btn btn-primary">Logout</a>
+
+				<!-- Button trigger delete account modal -->
+				<div class="card-body" style="text-align: center;">
+					<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+						data-bs-target="#staticBackdrop">
+						Delete Account
+					</button>
+				</div>
+
+				<!-- Modal to delete account -->
+				<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+					tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5 icon-link icon-link-hover"
+									style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
+									id="staticBackdropLabel">
+									<iconify-icon icon="fluent-emoji:warning" class="bi" aria-hidden="true"
+										style="color: yellow;"></iconify-icon>
+									Warning!
+								</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete this account?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancle</button>
+								<a th:href=@{/deleteAccount} class="btn btn-danger">Delete</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

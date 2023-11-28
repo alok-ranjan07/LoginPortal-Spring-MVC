@@ -96,6 +96,18 @@ public class MainController {
 		model.addAttribute("user", user);
 		return "userDetails";
 	}
+	
+	@GetMapping("/deleteAccount")
+	public String deleteAccountHandler(Model model) {
+		Userdata currentUser = userservice.searchByEmail(currentUserEmail);
+		userservice.deleteUser(currentUser);
+		currentUserEmail = null;
+		UserDto user = new UserDto();
+        model.addAttribute("user", user);
+		model.addAttribute("message", "Account Deleted Successfully!");
+		return "/login";
+		
+	}
 
 	@PostMapping("/addUser")
 	public String register(@Valid @ModelAttribute("user") UserDto userdto,
