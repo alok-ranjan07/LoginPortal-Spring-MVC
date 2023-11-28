@@ -5,13 +5,19 @@ import org.springframework.stereotype.Service;
 
 import com.portal.LoginPortal.Dto.UserDto;
 import com.portal.LoginPortal.Model.Userdata;
-import com.portal.LoginPortal.Repository.userRepository;
+import com.portal.LoginPortal.Repository.UserRepository;
+import com.portal.LoginPortal.SecurityConfig.PasswordEncoder;
+
 
 @Service
-public class userService {
+public class UserService {
 
 	@Autowired
-	private userRepository userRepo;
+	private UserRepository userRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 
 	public void add(UserDto userdto) {
 
@@ -50,12 +56,13 @@ public class userService {
 
 	private Userdata convertDtoToEntity(UserDto userdto) {
 		Userdata userdata = new Userdata();
+		String encryptedPassword = passwordEncoder.passwordEncode().encode(userdto.getPassword());
 		userdata.setUsername(userdto.getUsername());
 		userdata.setEmail(userdto.getEmail());
 		userdata.setNumber(userdto.getNumber());
 		userdata.setAnswer(userdto.getAnswer());
 		userdata.setGender(userdto.getGender());
-		userdata.setPassword(userdto.getPassword());
+		userdata.setPassword(encryptedPassword);
 		userdata.setQuestion(userdto.getQuestion());
 		userdata.setAddress(userdto.getAddress());
 		userdata.setAddress2(userdto.getAddress2());

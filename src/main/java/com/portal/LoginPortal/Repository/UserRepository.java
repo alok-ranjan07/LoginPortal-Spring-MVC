@@ -11,7 +11,7 @@ import com.portal.LoginPortal.Model.Userdata;
 
 
 @Repository
-public interface userRepository extends JpaRepository<com.portal.LoginPortal.Model.Userdata, Integer> {
+public interface UserRepository extends JpaRepository<com.portal.LoginPortal.Model.Userdata, Integer> {
 
 	Userdata findByUsername(String username);
 

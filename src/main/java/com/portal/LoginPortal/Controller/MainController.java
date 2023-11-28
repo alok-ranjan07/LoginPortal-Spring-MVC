@@ -18,15 +18,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portal.LoginPortal.Dto.UserDto;
 import com.portal.LoginPortal.Model.Userdata;
-import com.portal.LoginPortal.Service.userService;
-
+import com.portal.LoginPortal.SecurityConfig.PasswordEncoder;
+import com.portal.LoginPortal.Service.UserService;
 import jakarta.validation.Valid;
 
 @Controller
 public class MainController {
 
 	@Autowired
-	private userService userservice;
+	private UserService userservice;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	String currentUserEmail;
 
@@ -169,13 +172,13 @@ public class MainController {
 		String formatted = format.format(dateNow);
 		
 		if (password.equals(password2)) {
-			if(password.equals(userdata.getPassword())){
+			if(passwordEncoder.passwordEncode().matches(password, userdata.getPassword())){
 				String message = "Password can't be same as previous one";
 				redirectAttributes.addFlashAttribute("message", message);
 				return "redirect:/forgotPasswordChange";
 			}else {
 			userdata.setLastLogin(formatted);
-			userdata.setPassword(password);
+			userdata.setPassword(passwordEncoder.passwordEncode().encode(password));
 			userservice.add(userdata);
 			String message = "Password changed successfully. Please login!";
 			redirectAttributes.addFlashAttribute("message", message);
@@ -198,9 +201,9 @@ public class MainController {
 		format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
 		String formatted = format.format(dateNow);
 
-		if (oldPassword.equals(user.getPassword())) {
+		if (passwordEncoder.passwordEncode().matches(oldPassword, user.getPassword())) {
 			user.setLastLogin(formatted);
-			user.setPassword(newPassword);
+			user.setPassword(passwordEncoder.passwordEncode().encode(newPassword));
 			userservice.add(user);
 			model.addAttribute("message", "Password changed succesfully");
 			return "login";
@@ -234,7 +237,7 @@ public class MainController {
 
 				if (userdata != null) {
 
-					if (userdto.getPassword().equals(userdata.getPassword())) {
+					if (passwordEncoder.passwordEncode().matches(userdto.getPassword(), userdata.getPassword())) {
 						Date date = new Date();
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 						dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
