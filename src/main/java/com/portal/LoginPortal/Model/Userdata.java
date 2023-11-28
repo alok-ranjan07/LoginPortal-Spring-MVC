@@ -39,7 +39,7 @@ public class Userdata {
 	private String answer;
 
 	@Column(name = "mobile_number")
-	private Integer number;
+	private String number;
 
 	@Column(name = "last_login_time")
 	private String lastLogin;
@@ -100,11 +100,11 @@ public class Userdata {
 		this.answer = answer;
 	}
 
-	public Integer getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(Integer number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 
@@ -117,7 +117,7 @@ public class Userdata {
 	}
 
 	public Userdata(Integer userid, String username, String email, String password, String gender, String question,
-			String answer, Integer number, String lastLogin) {
+			String answer, String number, String lastLogin) {
 		super();
 		this.userid = userid;
 		this.username = username;
@@ -130,6 +130,10 @@ public class Userdata {
 		this.lastLogin = lastLogin;
 	}
 
+	public Userdata() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "Userdata [userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password
@@ -137,8 +141,6 @@ public class Userdata {
 				+ ", lastLogin=" + lastLogin + "]";
 	}
 
-	public Userdata() {
-		super();
-	}
+
 
 }

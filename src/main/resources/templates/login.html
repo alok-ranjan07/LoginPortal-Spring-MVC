@@ -3,14 +3,22 @@
 	<head>
 		<title>Registration Page</title>
 		<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
+		<link rel="stylesheet"
+ href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+ integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+ crossorigin="anonymous">
 	</head>
 	
 	<body>
 		<h1>Please Log-in</h1>
 		
-		<form th:action="@{/userDetails}" method="post" th:object="${userdata}">
+		<form th:action="@{/userDetails}" method="post" th:object="${user}">
 			Enter the username/E-mail: <input type="text" id="username" th:field="*{username}" /><br>
+			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br><br>
+			
 			Enter the password: <input type="password" id="password" th:field="*{password}" /> <br>
+			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br><br>
+			
 			<button type="submit">Login</button><br>
 			<a th:href=@{/forgotPassword} >Forgot password</a>
 		</form>

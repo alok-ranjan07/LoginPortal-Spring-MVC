@@ -4,16 +4,29 @@ xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Registration Page</title>
 		<link rel="stylesheet" type="text/css" th:href="@{styles.css}" />
+		<link rel="stylesheet"
+ href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+ integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+ crossorigin="anonymous">
 	</head>
 	
 	<body>
 		<h1>Sign-up in seconds</h1>
 		
-		<form th:action="@{/addUser}" method="post" th:object="${userdata}">
-			Enter the username: <input type="text" id="username" th:field="*{username}" required/><br><br>
+		<form th:action="@{/addUser}" method="post" th:object="${user}">
+			
+			Enter the username: <input type="text" id="username" th:field="*{username}" pattern="^[a-zA-Z0-9]{6,12}$" required/><br><br>
+			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div><br><br>
+			
 			Enter the E-mail: <input type="text" id="email" th:field="*{email}" required/><br><br>
+			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+			
 			Enter the Mobile number: <input type="number" id="mobile_number" th:field="*{number}" required/><br><br>
+			<div th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div><br><br>
+			
 			Enter the password: <input type="password" id="password" th:field="*{password}" required/> <br><br>
+			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div><br><br>
+			
 			Select Gender: Male <input type="radio" id="gender" value="Male" th:field="*{gender}" />
 						   Female <input type="radio" id="gender" value="Female" th:field="*{gender}" /> <br><br>
 			Select Security Question: <select id="securityquestion" th:field="*{question}">

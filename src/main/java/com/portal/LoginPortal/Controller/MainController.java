@@ -9,14 +9,19 @@ import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.portal.LoginPortal.Dto.UserDto;
 import com.portal.LoginPortal.Model.Userdata;
 import com.portal.LoginPortal.Service.userService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class MainController {
@@ -36,13 +41,17 @@ public class MainController {
 		return "home";
 	}
 
-	@GetMapping("/signup")
-	public String registraionHandler(Userdata userdatda) {
-		return "signup";
-	}
+	@GetMapping("signup")
+    public String showRegistrationForm(Model model){
+        UserDto user = new UserDto();
+        model.addAttribute("user", user);
+        return "signup";
+    }
 
 	@GetMapping("/login")
-	public String loginHandler(Userdata userdata) {
+	public String loginHandler(Model model) {
+		UserDto user = new UserDto();
+        model.addAttribute("user", user);
 		return "login";
 	}
 
@@ -75,23 +84,38 @@ public class MainController {
 	}
 
 	@PostMapping("/addUser")
-	public String register(@ModelAttribute("user") Userdata userdata, RedirectAttributes redirectAttributes) {
-		Userdata currentUserEmail = userservice.searchByEmail(userdata.getEmail());
-		Userdata currentUserName = userservice.searchByUsername(userdata.getUsername());
-		if (currentUserEmail == null && currentUserName == null) {
+	public String register(@Valid @ModelAttribute("user") UserDto user,
+            BindingResult result,
+            Model model, 
+			RedirectAttributes redirectAttributes) {
+		 if (result.hasErrors()) {
+	            model.addAttribute("user", user);
+	            return "signup";
+	        }else {
+			Userdata currentUserEmail = userservice.searchByEmail(user.getEmail());
+			Userdata currentUserName = userservice.searchByUsername(user.getUsername());
+			if (currentUserEmail == null && currentUserName == null) {
+				
+				Date dateNow = new Date();
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+				String formatted = format.format(dateNow);
+				user.setLastLogin(formatted);
+				userservice.add(user);
 
-			userservice.add(userdata);
-			String userId = userdata.getUserid().toString();
-			String message = "Registration Successfully completed. Your User Id is : " + userId;
-			redirectAttributes.addFlashAttribute("message", message);
-			redirectAttributes.addFlashAttribute("userId", userId);
-			return "redirect:/login";
-		} else {
-			String message = "Already registered! Please login.";
-			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/login";
+				Integer userId = (user.getUsername() == null) ?
+
+						userservice.searchById(user.getEmail()) : userservice.searchById(user.getUsername());
+				String message = "Registration Successfully completed. Your User Id is : " + userId;
+				redirectAttributes.addFlashAttribute("message", message);
+				redirectAttributes.addFlashAttribute("userId", userId);
+				return "redirect:/login";
+			} else {
+				String message = "Already registered! Please login.";
+				redirectAttributes.addFlashAttribute("message", message);
+				return "redirect:/login";
+			}
 		}
-
 	}
 
 	@PostMapping("/updatepassword")
@@ -120,16 +144,16 @@ public class MainController {
 	@PostMapping("/changeForgotPassword")
 	public String changePasswordHandler(@RequestParam("password") String password,
 			@RequestParam("password2") String password2, Model model, RedirectAttributes redirectAttributes) {
-		Userdata user = userservice.searchByEmail(currentUserEmail);
+		Userdata userdata = userservice.searchByEmail(currentUserEmail);
 		Date dateNow = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
 		String formatted = format.format(dateNow);
 
 		if (password.equals(password2)) {
-			user.setLastLogin(formatted);
-			user.setPassword(password);
-			userservice.add(user);
+			userdata.setLastLogin(formatted);
+			userdata.setPassword(password);
+			userservice.add(userdata);
 			String message = "Password changed successfully. Please login!";
 			redirectAttributes.addFlashAttribute("message", message);
 
@@ -163,75 +187,81 @@ public class MainController {
 	}
 
 	@PostMapping("/userDetails")
-	public String loginProcess(@RequestParam("username") String data, @RequestParam("password") String password,
-			Model model, RedirectAttributes redirectAttributes) {
-		if (!data.isEmpty() && !password.isEmpty()) {
-			Userdata usersName = userservice.searchByUsername(data);
-			Userdata usersEmail = userservice.searchByEmail(data);
-			Userdata user = null;
+	public String loginProcess(@Valid @ModelAttribute("user") UserDto userdto,
+			BindingResult result,
+			Model model,  RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()) {
+			model.addAttribute("user", userdto);
+			return "login";
+		} else {
+			if (((!userdto.getUsername().isEmpty()) || (!userdto.getEmail().isEmpty())) && !userdto.getPassword().isEmpty()) {
+				Userdata usersName = userservice.searchByUsername(userdto.getUsername());
+				Userdata usersEmail = userservice.searchByEmail(userdto.getEmail());
+				Userdata user = null;
 
-			while (usersName != null) {
-				user = usersName;
-				break;
-			}
-			while (usersEmail != null) {
-				user = usersName;
-				break;
-			}
-
-			if (user != null) {
-
-				if (password.equals(user.getPassword())) {
-					Date date = new Date();
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-					String newLoginTime = dateFormat.format(date);
-					String lastLoginTime = user.getLastLogin().substring(0, 10);
-					LocalDate newLogin = LocalDate.parse(newLoginTime);
-					LocalDate lastLogin = LocalDate.parse(lastLoginTime);
-					long diffInDays = ChronoUnit.DAYS.between(lastLogin, newLogin);
-					currentUserEmail = user.getEmail();
-					if (diffInDays <= 30) {
-						Date dateNow = new Date();
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-						format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-						String formatted = format.format(dateNow);
-						user.setLastLogin(formatted);
-						userservice.add(user);
-
-						model.addAttribute("username", user.getUsername());
-						model.addAttribute("email", user.getEmail());
-						model.addAttribute("number", user.getNumber());
-						model.addAttribute("gender", user.getGender());
-						return "userDetails";
-					} else {
-						String message = "Your Account is inactive for more than 30 days! Please change your password.";
-						redirectAttributes.addFlashAttribute("message", message);
-						return "redirect:/changePassword";
-					}
-				} else {
-					String message = "Username/Email-id and Password doesn't match. Please try again!";
-					redirectAttributes.addFlashAttribute("message", message);
-					return "redirect:/login";
+				while (usersName != null) {
+					user = usersName;
+					break;
+				}
+				while (usersEmail != null) {
+					user = usersName;
+					break;
 				}
 
-			}
-			String message = "User doesn't exist! Please sign-up";
-			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/signup";
+				if (user != null) {
 
-		} else if (data.isEmpty()) {
-			String message = "Username/Email-id is empty";
-			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/login";
-		} else if (password.isEmpty()) {
-			String message = "Password is empty";
-			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/login";
-		} else {
-			String message = "Something went wrong. Pl";
-			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/home";
+					if (userdto.getPassword().equals(user.getPassword())) {
+						Date date = new Date();
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+						String newLoginTime = dateFormat.format(date);
+						String lastLoginTime = user.getLastLogin().substring(0, 10);
+						LocalDate newLogin = LocalDate.parse(newLoginTime);
+						LocalDate lastLogin = LocalDate.parse(lastLoginTime);
+						long diffInDays = ChronoUnit.DAYS.between(lastLogin, newLogin);
+						currentUserEmail = user.getEmail();
+						if (diffInDays <= 180) {
+							Date dateNow = new Date();
+							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+							String formatted = format.format(dateNow);
+							user.setLastLogin(formatted);
+							userservice.add(user);
+
+							model.addAttribute("username", user.getUsername());
+							model.addAttribute("email", user.getEmail());
+							model.addAttribute("number", user.getNumber());
+							model.addAttribute("gender", user.getGender());
+							return "userDetails";
+						} else {
+							String message = "Your Account is inactive for more than 30 days! Please change your password.";
+							redirectAttributes.addFlashAttribute("message", message);
+							return "redirect:/changePassword";
+						}
+					} else {
+						String message = "Username/Email-id and Password doesn't match. Please try again!";
+						redirectAttributes.addFlashAttribute("message", message);
+						return "redirect:/login";
+					}
+
+				}
+				String message = "User doesn't exist! Please sign-up";
+				redirectAttributes.addFlashAttribute("message", message);
+				return "redirect:/signup";
+
+			} else if (userdto.getUsername().isEmpty() || userdto.getEmail().isEmpty()) {
+				String message = "Username/Email-id is empty";
+				redirectAttributes.addFlashAttribute("message", message);
+				return "redirect:/login";
+			} else if (userdto.getPassword().isEmpty()) {
+				String message = "Password is empty";
+				redirectAttributes.addFlashAttribute("message", message);
+				return "redirect:/login";
+			} else {
+				String message = "Something went wrong. Pl";
+				redirectAttributes.addFlashAttribute("message", message);
+				return "redirect:/home";
+			}
 		}
 	}
 
