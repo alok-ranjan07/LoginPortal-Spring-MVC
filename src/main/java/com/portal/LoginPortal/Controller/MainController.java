@@ -260,16 +260,16 @@ public class MainController {
 						long diffInDays = ChronoUnit.DAYS.between(lastLogin, newLogin);
 						currentUserEmail = userdata.getEmail();
 						if (diffInDays <= 180) {
+							
+							UserDto userDto = userservice.getUserDto(userdata);
+							model.addAttribute("user", userDto);
+							
 							Date dateNow = new Date();
 							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 							format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
 							String formatted = format.format(dateNow);
 							userdata.setLastLogin(formatted);
 							userservice.add(userdata);
-							
-							UserDto userDto = userservice.getUserDto(userdata);
-
-							model.addAttribute("user", userDto);
 						
 							return "userDetails";
 						} else {

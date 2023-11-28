@@ -14,6 +14,10 @@ public class UserDto {
 			message = "Please provide a valid email-id")
 	private String email;
 	
+	@Pattern(regexp = "^[a-zA-Z0-9]{6,12}$"+"|"+"[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+(?:\\.[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?",
+			message = "Provide a valid Username or Email")
+	private String data;
+	
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,12}$",
             message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
@@ -21,10 +25,6 @@ public class UserDto {
 	@Pattern(regexp = "^(0|91)?[7-9][0-9]{9}$",
 			message = "Please provide a valid mobile number.")
 	private String number;
-	
-	@Pattern(regexp = "^[a-zA-Z0-9]{6,12}$"+"|"+"[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+(?:\\.[-A-Za-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?",
-			message = "Provide a valid Username or Email")
-	private String data;
 	
 	@Pattern(regexp = "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)",
 			message = "Incorrect City Format")
@@ -41,6 +41,7 @@ public class UserDto {
 	private String question;
 	private String answer;
 	private String lastLogin;
+	
 	public String getUsername() {
 		return username;
 	}
