@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user", schema = "Userdata")
 @DynamicUpdate
-
 public class Userdata {
 
 	@Id
@@ -43,19 +42,19 @@ public class Userdata {
 
 	@Column(name = "last_login_time")
 	private String lastLogin;
-	
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "address_optional")
 	private String address2;
-	
+
 	@Column(name = "city")
 	private String city;
-	
+
 	@Column(name = "state")
 	private String state;
-	
+
 	@Column(name = "zip_code")
 	private String zip;
 
@@ -202,9 +201,5 @@ public class Userdata {
 				+ ", lastLogin=" + lastLogin + ", address=" + address + ", address2=" + address2 + ", city=" + city
 				+ ", state=" + state + ", zip=" + zip + "]";
 	}
-	
-
-	
-
 
 }

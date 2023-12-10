@@ -33,8 +33,9 @@
 					th:text="${user.address} +', ' + ${user.address2} +', '+ ${user.city} +', '+ ${user.state} +', '+ ${user.zip}">
 				</p>
 				Last Login :<p class="card-text" th:text="${user.lastLogin}"></p>
-
-				<a th:href=@{/changePassword} class="btn btn-primary">Change password</a>
+				
+				<!-- we can also write like this <a th:href="@{'/changePassword/' + ${userid}}"></a> -->
+				<a th:href=@{/changeUserPassword/{userid}(userid=${userid})} class="btn btn-primary">Change password</a>
 				<a style="text-align: right;" th:href=@{/logout} class="btn btn-primary">Logout</a>
 
 				<!-- Button trigger delete account modal -->
@@ -66,7 +67,8 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancle</button>
-								<a th:href=@{/deleteAccount} class="btn btn-danger">Delete</a>
+								<a th:href=@{/deleteAccount/{userid}(userid=${userid})}
+									class="btn btn-danger">Delete</a>
 							</div>
 						</div>
 					</div>

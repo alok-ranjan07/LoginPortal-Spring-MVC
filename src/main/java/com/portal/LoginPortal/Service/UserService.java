@@ -1,5 +1,7 @@
 package com.portal.LoginPortal.Service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,15 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public void add(UserDto userdto) {
+	public Userdata add(UserDto userdto) {
 
-		userRepo.save(convertDtoToEntity(userdto));
+		return userRepo.save(convertDtoToEntity(userdto));
 
 	}
 
-	public void add(Userdata userdata) {
+	public Userdata add(Userdata userdata) {
 
-		userRepo.save(userdata);
+		return userRepo.save(userdata);
 
 	}
 
@@ -56,6 +58,11 @@ public class UserService {
 			return userRepo.findByUsername(data).getUserid();
 		}
 
+	}
+	
+	public Optional<Userdata> searchByUserId(Integer userid) {
+		
+		return userRepo.findById(userid);
 	}
 
 	private Userdata convertDtoToEntity(UserDto userdto) {
@@ -96,5 +103,7 @@ public class UserService {
 
 		return userdto;
 	}
+
+
 
 }
